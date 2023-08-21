@@ -124,7 +124,7 @@ class MBDGraphs:
     # TODO: set up init view
     def mbd_3d(self, low_temp=100, up_temp=4000):
         """TODO"""
-        X = np.linspace(low_temp, up_temp, 100)  # temp
+        X = np.linspace(low_temp, up_temp, 200)  # temp
         Y = np.linspace(0, 15000, 200)  # speed
         Z = np.array([mbd(Y, self.pmass, T) for T in X])
         Y, X = np.meshgrid(X, Y)
@@ -172,6 +172,7 @@ class MBDGraphs:
     def mbd_succ_coll_kinetic(
         self,
         E_acts=np.linspace(0.7e-19, 3e-19, 4),
+        E_act_labels=None,
         temps=np.linspace(200, 20000, 5000),
         base_f=None,
         verbose=False,
@@ -179,7 +180,7 @@ class MBDGraphs:
         """TODO"""
         x_v = np.linspace(0, 50000, 30000)
         x_E = np.vectorize(lambda v: 0.5 * self.pmass * v**2)(x_v)  # energy
-        for E_act in E_acts:
+        for iter, E_act in enumerate(E_acts):
             index = np.where(x_E > E_act)[0][0]
             x_T, y_area = np.array([]), np.array([])
             for T in temps:
@@ -188,7 +189,10 @@ class MBDGraphs:
                 area = simpson(y_prob[index:], x_E[index:])
                 x_T = np.append(x_T, T)
                 y_area = np.append(y_area, area)
-            plt.plot(x_T, y_area, label=f"E_act={E_act}J")
+            label = (
+                f"E_act={round(E_act if E_act_labels is None else E_act_labels[iter])}"
+            )
+            plt.plot(x_T, y_area, label=label)
 
             if base_f:
                 params, covariance = curve_fit(base_f, x_T, y_area)
@@ -225,3 +229,6 @@ class MBDGraphs:
     def save(self, filename="result"):
         """TODO"""
         plt.savefig(f"{self.root_dir}/{filename}.png", dpi=300)
+
+    def clear(self):
+        plt.clf()
