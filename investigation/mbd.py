@@ -190,21 +190,22 @@ class MBDGraphs:
                 x_T = np.append(x_T, T)
                 y_area = np.append(y_area, area)
             label = (
-                f"E_act={round(E_act if E_act_labels is None else E_act_labels[iter])}K"
+                f"E_act={round(E_act if E_act_labels is None else E_act_labels[iter])}J"
             )
             plt.plot(x_T, y_area, label=label)
 
             if base_f:
                 params, covariance = curve_fit(base_f, x_T, y_area)
-                plt.plot(
-                    x_T, base_f(x_T, *params), "--", label=f"curve_fit for {E_act}J"
-                )
+                label = f"curve_fit for {round(E_act if E_act_labels is None else E_act_labels[iter])}J"
+                plt.plot(x_T, base_f(x_T, *params), "--", label=label)
                 if verbose:
                     SE = np.sqrt(np.diag(covariance))
                     print(f"E_act={E_act}J\nparams: {params}\nstd err: {SE}\n")
 
         plt.xlabel("Temperature")
         plt.ylabel("Fraction of particles")
+
+        plt.ylim(bottom=0, top=1)
 
         return self
 
