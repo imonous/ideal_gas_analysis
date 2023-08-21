@@ -190,7 +190,7 @@ class MBDGraphs:
                 x_T = np.append(x_T, T)
                 y_area = np.append(y_area, area)
             label = (
-                f"E_act={round(E_act if E_act_labels is None else E_act_labels[iter])}"
+                f"E_act={round(E_act if E_act_labels is None else E_act_labels[iter])}K"
             )
             plt.plot(x_T, y_area, label=label)
 
