@@ -200,7 +200,7 @@ class MBDGraphs:
                     print(f"E_act={E_act}J\nparams: {params}\nstd err: {SE}\n")
 
         plt.xlabel("Temperature")
-        plt.ylabel("Area")
+        plt.ylabel("Fraction of particles")
 
         return self
 
