@@ -9,8 +9,6 @@ from scipy.optimize import curve_fit
 
 from math import e, sqrt
 
-import gi
-
 
 def mbd(v, m, T):
     """The Maxwell-Boltzmann distribution."""
