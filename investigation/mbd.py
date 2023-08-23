@@ -219,6 +219,7 @@ class MBDGraphs:
         for T in temps:
             y_prob = mbd(x_v, self.pmass, T)
             y_prob *= 1 / simpson(y_prob, x_E)  # normalise
+            yield T, x_E, y_prob
 
     def set_view(self, title=None, legend=True, grid=True, ticks=True):
         """TODO"""
