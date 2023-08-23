@@ -207,6 +207,19 @@ class MBDGraphs:
 
         return self
 
+    def generate_raw(
+        self,
+        E_acts=np.linspace(0.7e-19, 3e-19, 4),
+        E_act_labels=None,
+        temps=np.linspace(200, 20000, 5000),
+    ):
+        """TODO"""
+        x_v = np.linspace(0, 50000, 30000)
+        x_E = np.vectorize(lambda v: 0.5 * self.pmass * v**2)(x_v)  # energy
+        for T in temps:
+            y_prob = mbd(x_v, self.pmass, T)
+            y_prob *= 1 / simpson(y_prob, x_E)  # normalise
+
     def set_view(self, title=None, legend=True, grid=True, ticks=True):
         """TODO"""
         if not ticks:

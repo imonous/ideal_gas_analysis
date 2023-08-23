@@ -21,6 +21,10 @@ def data_process(mbdg):
     ).set_view().save("diagrams/raw_data2")
 
 
+def raw_data(mbdg):
+    pass
+
+
 def analysis(mbdg):
     mbdg.mbd_succ_coll_kinetic(
         E_acts=[1.5e-19], E_act_labels=[200e3], base_f=mbd.base_log, verbose=True
@@ -39,5 +43,3 @@ if __name__ == "__main__":
 
     compound = Formula("He")
     mbdg = mbd.MBDGraphs(compound)
-
-    arrhenius(mbdg)
