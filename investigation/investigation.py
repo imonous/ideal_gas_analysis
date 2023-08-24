@@ -27,7 +27,25 @@ def data_process(mbdg):
 
 
 def save_raw_data_md(mbdg):
-    pass
+    data = []
+    tick = 0
+    for entry in mbdg.generate_raw(
+        temps=np.linspace(200, 20000, 25)
+    ):  # github size limit
+        T, E, P = entry
+        for i in range(len(E)):
+            data.append(
+                {
+                    "Temperature, K": round(T, 4),
+                    "Kinetic energy, kJ": round(E[i] * 1e20, 4),
+                    "Probability": f"{P[i] * 1e-20: .4e}",
+                }
+            )
+        print(tick)
+        tick += 1
+    with open(f"{PATH}/raw_data.md", "w") as file:
+        markdown = markdown_table(data).get_markdown()
+        file.write(markdown)
 
 
 def analysis(mbdg):
@@ -48,23 +66,3 @@ if __name__ == "__main__":
 
     compound = Formula("He")
     mbdg = mbd.MBDGraphs(compound)
-
-    data = []
-    tick = 0
-    for entry in mbdg.generate_raw(
-        temps=np.linspace(200, 20000, 25)
-    ):  # github size limit
-        T, E, P = entry
-        for i in range(len(E)):
-            data.append(
-                {
-                    "Temperature, K": round(T, 4),
-                    "Kinetic energy, kJ": round(E[i] * 1e20, 4),
-                    "Probability": round(P[i], 4),
-                }
-            )
-        print(tick)
-        tick += 1
-    with open(f"{PATH}/raw_data.md", "w") as file:
-        markdown = markdown_table(data).get_markdown()
-        file.write(markdown)
