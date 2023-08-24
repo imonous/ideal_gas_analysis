@@ -50,16 +50,21 @@ if __name__ == "__main__":
     mbdg = mbd.MBDGraphs(compound)
 
     data = []
-    for entry in mbdg.generate_raw(temps=[100, 200, 300, 400, 500]):
+    tick = 0
+    for entry in mbdg.generate_raw(
+        temps=np.linspace(200, 20000, 25)
+    ):  # github size limit
         T, E, P = entry
         for i in range(len(E)):
             data.append(
                 {
-                    "Temperature, K": T,
-                    "Kinetic energy, J": E[i],
-                    "Probability": P[i],
+                    "Temperature, K": round(T, 4),
+                    "Kinetic energy, kJ": round(E[i] * 1e20, 4),
+                    "Probability": round(P[i], 4),
                 }
             )
-    with open(f"{PATH}/raw_data.txt", "w") as file:
+        print(tick)
+        tick += 1
+    with open(f"{PATH}/raw_data.md", "w") as file:
         markdown = markdown_table(data).get_markdown()
         file.write(markdown)

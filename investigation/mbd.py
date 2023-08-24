@@ -209,8 +209,6 @@ class MBDGraphs:
 
     def generate_raw(
         self,
-        E_acts=np.linspace(0.7e-19, 3e-19, 4),
-        E_act_labels=None,
         temps=np.linspace(200, 20000, 5000),
     ):
         """TODO"""
