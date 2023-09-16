@@ -1,15 +1,15 @@
 # Macro states are composed of many micro states. Each micro state has a
-# probability (usually identical). It is said that a system made up of many 
+# probability (usually identical). It is said that a system made up of many
 # possible micro states will settle on the one with most micro states.
 
 # A real world example: coin flip. For n coins, the number of possible
 # configurations (micro states) is 2^n. The number of possible heads vs tails
-# (macro states) is n+1. All micro states are equally probable. The most 
+# (macro states) is n+1. All micro states are equally probable. The most
 # probable macro state is n/2 heads and n/2 tails, because it has most micro
 # states (n choose n/2).
 
-# Context: aforemetioned coin flip. With respect to n, graph difference between 
-# probability of [most probable macro state] and [2nd most probable macro 
+# Context: aforemetioned coin flip. With respect to n, graph difference between
+# probability of [most probable macro state] and [2nd most probable macro
 # state]. Given the initial theorem, the graph should increase exponentially.
 
 
@@ -22,14 +22,13 @@ import seaborn as sns
 import gi
 
 
-
 class Difference:
     def __init__(self, n):
         if n % 2 != 0:
-            raise Exception("n must be even") # to simplify
+            raise Exception("n must be even")  # to simplify
         self.n = n
-        self.max_micro = comb(n, n//2) # most probable
-        self.max2_micro = comb(n, n//2 - 1) # second most probable
+        self.max_micro = comb(n, n // 2)  # most probable
+        self.max2_micro = comb(n, n // 2 - 1)  # second most probable
         self.total_micro = 2**n
 
     def absolute_difference(self):
@@ -44,7 +43,6 @@ if __name__ == "__main__":
     gi.require_version("Gtk", "3.0")
     mpl.use("module://mplcairo.gtk")
     sns.set_theme()
-
 
     # Data
     MAX_N = 1000
@@ -69,5 +67,3 @@ if __name__ == "__main__":
     # Adjust and display
     plt.tight_layout()
     plt.show()
-
-    
