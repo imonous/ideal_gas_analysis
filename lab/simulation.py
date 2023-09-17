@@ -311,15 +311,20 @@ class Simulation(animation.TimedAnimation):
         return iter(np.linspace(0, self.max_time, self.Nt))
 
     def save_data(self):
-        with open("preassure.txt", "w") as outf:
-            t = np.linspace(0, self.max_time, self.NP)
-            for i in range(self.NP):
-                outf.write("%.5f\t%.5f\t%.5g\n" % (t[i], self.P_x[i], self.P_y[i]))
+        # with open("preassure.txt", "w") as outf:
+        #     t = np.linspace(0, self.max_time, self.NP)
+        #     for i in range(self.NP):
+        #         outf.write("%.5f\t%.5f\t%.5g\n" % (t[i], self.P_x[i], self.P_y[i]))
 
-        with open("hist_vel.txt", "w") as outf:
-            for i in range(self.Nv):
-                outf.write("%.5f\t%.5g\n" % (self.vel_x[i], self.vel_y[i]))
+        # with open("hist_vel.txt", "w") as outf:
+        #     for i in range(self.Nv):
+        #         outf.write("%.5f\t%.5g\n" % (self.vel_x[i], self.vel_y[i]))
+
+        output = []
+        for i in range(self.Nv):
+            output.append((round(self.vel_x[i], 3), round(self.vel_y[i], 3)))
+        return output
 
 
-def V(t, V0, Vf, t_max):
-    return V0 + (Vf - V0) * t / t_max
+# def V(t, V0, Vf, t_max):
+#     return V0 + (Vf - V0) * t / t_max

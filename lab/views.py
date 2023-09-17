@@ -40,5 +40,11 @@ def simulation(request):
     temp = request.session.get("temp")
     time = request.session.get("time")
     ani = Simulation(PARTICLES, MASS, RADIUS, temp, 2, time, 0.05)
+
+    raw_data = ani.save_data()
+    print(raw_data)
     video = ani.to_html5_video()
-    return render(request, "lab/simulation.html", {"video": video})
+
+    return render(
+        request, "lab/simulation.html", {"video": video, "raw_data": raw_data}
+    )
