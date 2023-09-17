@@ -337,13 +337,12 @@ ani = Simulation(PARTICLES, MASS, RADIUS, TEMPERATURE, 2, T_MAX, 0.05)
 
 from matplotlib.animation import PillowWriter
 
-writer = PillowWriter(fps=20)
-ani.save("animation.gif", writer=writer)
-
+# writer = PillowWriter(fps=20)
+# ani.save("animation.gif", writer=writer)
 
 # with open("out.txt", "w") as f:
 #     data = ani.to_html5_video()
 #     f.write(data)
 
-# plt.show()
+plt.show()
 # ani.save_data()
