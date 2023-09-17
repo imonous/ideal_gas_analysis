@@ -21,6 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-(7&s17=d!v12*e_uw@zr92(slnk%23%7$oj^@=%45*m823fdd)"
+LOCKDOWN_PASSWORDS = ("chem@bbis2023!")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "lockdown",
     "lab",
 ]
 
@@ -52,6 +54,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "lockdown.middleware.LockdownMiddleware",
+
 ]
 
 ROOT_URLCONF = "ideal_gas_analysis.urls"
