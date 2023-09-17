@@ -26,6 +26,10 @@ SECRET_KEY = "django-insecure-(7&s17=d!v12*e_uw@zr92(slnk%23%7$oj^@=%45*m823fdd)
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1",
+    "https://*.fly.dev/",
+]
 
 
 # Application definition
@@ -74,12 +78,14 @@ WSGI_APPLICATION = "ideal_gas_analysis.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+# DATABASES = {
+# "default": {
+#     "ENGINE": "django.db.backends.sqlite3",
+#     "NAME": BASE_DIR / "db.sqlite3",
+# }
+# }
+
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 
 
 # Password validation
