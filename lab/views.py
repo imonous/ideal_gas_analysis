@@ -1,6 +1,14 @@
 from django.shortcuts import render, redirect
 from django import forms
 
+from .simulation import Simulation
+
+PARTICLES = 100
+MASS = 1.2e-20
+RADIUS = 0.01
+V0, Vf = 0.5, 15
+T_MAX = 5
+
 
 class LabForm(forms.Form):
     temp = forms.FloatField(
@@ -24,5 +32,7 @@ def index(request):
 
 
 def simulation(request):
-    print(request.session.get("temp"))
-    return render(request, "lab/simulation.html", {})
+    temp = request.session.get("temp")
+    ani = Simulation(PARTICLES, MASS, RADIUS, temp, 2, T_MAX, 0.05)
+    video = ani.to_html5_video()
+    return render(request, "lab/simulation.html", {"video": video})

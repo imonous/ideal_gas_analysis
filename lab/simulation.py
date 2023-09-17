@@ -323,26 +323,3 @@ class Simulation(animation.TimedAnimation):
 
 def V(t, V0, Vf, t_max):
     return V0 + (Vf - V0) * t / t_max
-
-
-PARTICLES = 100
-MASS = 1.2e-20
-RADIUS = 0.01
-TEMPERATURE = 500
-V0, Vf = 0.5, 15
-T_MAX = 10
-
-ani = Simulation(PARTICLES, MASS, RADIUS, TEMPERATURE, 2, T_MAX, 0.05)
-# ani = Simulation(PARTICLES, MASS, RADIUS, TEMPERATURE, lambda t: V(t, V0, Vf, T_MAX), T_MAX)
-
-from matplotlib.animation import PillowWriter
-
-# writer = PillowWriter(fps=20)
-# ani.save("animation.gif", writer=writer)
-
-# with open("out.txt", "w") as f:
-#     data = ani.to_html5_video()
-#     f.write(data)
-
-plt.show()
-# ani.save_data()
