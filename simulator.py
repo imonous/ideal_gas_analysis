@@ -31,6 +31,7 @@ class Simulation:
         self.MASS = mass
         self.RAD = rad  # PARTICLE RADIUS
         self.DIAM = 2 * rad  # PARTICLE DIAMETER
+
         self.T = T  # SYSTEM TEMPERATURE
         self.V = V
 
