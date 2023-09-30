@@ -27,10 +27,6 @@ def pmod(v, T, m):
 
 class Simulation:
     def __init__(self, n_particles, mass, rad, T, V, dt=0.2):
-        """
-        CHECK DOCSTRINGS
-        """
-
         self.PART = n_particles  # PARTICLE NUMBER
         self.MASS = mass
         self.RAD = rad  # PARTICLE RADIUS
@@ -40,30 +36,11 @@ class Simulation:
 
         self.L = np.power(self.V, 1 / 3)  # SIDE LENGTH
         self.halfL = self.L / 2  # HALF SIDE LENGTH
-        self.A = 6 * self.L**2  # SURFACE AREA
 
         self.dt = dt  # TIME DIFFERENCE EACH STEP
-
-        self.evaluate_properties()  # INIT FURTHER PROPERTIES
-
-        self.min_v = 0  # MIN VELOCITY
-        self.max_v = self.vmax * 3  # LOL
         self.dv = 0.2  # DIFFERENCE IN VELOCITY EACH STEP
-        self.dP = 1  # DIFFERENCE IN PRESSURE EACH STEP (s)
 
         self.init_particles()  # INIT PARTICLE POSITIONS AND VELOCITIES
-
-    def evaluate_properties(self):
-        """
-        Calculates the initial properties of the system according
-        to the laws of thermodynamics.
-        """
-
-        self.P = self.PART * k_B * self.T / self.V  # PRESSURE
-        self.U = 1.5 * self.PART * k_B * self.T
-        self.vrms = np.sqrt(3 * k_B * self.T / self.MASS)  # RMS VELOCITY
-        self.vmax = np.sqrt(2 * k_B * self.T / self.MASS)  # MAX VELOCITY
-        self.vmed = np.sqrt(8 * k_B * self.T / (np.pi * self.MASS))  # AVG VELOCITY
 
     def init_particles(self):
         """
@@ -86,7 +63,8 @@ class Simulation:
         self.v[:, 1] = np.sin(v_polar[:, 0] * np.pi) * np.sin(v_polar[:, 1] * 2 * np.pi)
         self.v[:, 2] = np.cos(v_polar[:, 0] * np.pi)
 
-        self.v *= self.vrms
+        vrms = np.sqrt(3 * k_B * self.T / self.MASS)  # RMS VELOCITY
+        self.v *= vrms
 
     def next_step(self):
         """calculate the next step"""
