@@ -105,3 +105,18 @@ class Simulation:
 
 
 # sim = Simulation(500, 1.2e-20, 0.01, 500, 2, 0.05)
+
+import panel as pn
+import hvplot.pandas
+import pandas as pd
+import holoviews as hv
+from holoviews import dim, opts
+
+hv.extension("plotly")
+
+y, x = np.mgrid[-5:5, -5:5] * 0.1
+z = np.sin(x**2 + y**2)
+
+hv.Scatter3D((x.flat, y.flat, z.flat)).opts(
+    cmap="fire", color="z", size=5, colorbar=True, height=600, width=600
+)

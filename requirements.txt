@@ -2,7 +2,10 @@ bleach==6.0.0
 bokeh==3.2.2
 certifi==2023.7.22
 charset-normalizer==3.3.0
+colorcet==3.0.1
 contourpy==1.1.1
+holoviews==1.17.1
+hvplot==0.8.4
 idna==3.4
 Jinja2==3.1.2
 linkify-it-py==2.0.2
@@ -17,6 +20,7 @@ pandas==2.1.1
 panel==1.2.3
 param==1.13.0
 Pillow==10.0.1
+pyct==0.5.0
 python-dateutil==2.8.2
 pytz==2023.3.post1
 pyviz_comms==3.0.0
