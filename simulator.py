@@ -1,4 +1,10 @@
-""" BASED ON: https://github.com/labay11/ideal-gas-simulation """
+""" 
+BASED ON: https://github.com/labay11/ideal-gas-simulation 
+
+Memory usage: linear => N/10 MiB, where N is the number of particles
+CPU heavy
+"""
+
 
 import numpy as np
 
@@ -98,4 +104,5 @@ class Simulation:
         self.r[walls] -= self.RAD * np.sign(self.r[walls])
 
 
-# ani = Simulation(500, 1.2e-20, 0.01, 500, 2, 0.05)
+sim = Simulation(500, 1.2e-20, 0.01, 500, 2, 0.05)
+sim.next_step()
