@@ -104,5 +104,4 @@ class Simulation:
         self.r[walls] -= self.RAD * np.sign(self.r[walls])
 
 
-sim = Simulation(500, 1.2e-20, 0.01, 500, 2, 0.05)
-sim.next_step()
+# sim = Simulation(500, 1.2e-20, 0.01, 500, 2, 0.05)
