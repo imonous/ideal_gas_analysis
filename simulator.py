@@ -111,8 +111,5 @@ class Simulation:
         self.v[walls] *= -1
         self.r[walls] -= self.RAD * np.sign(self.r[walls])
 
-    def get_points(self):
-        return (self.r[:, 0], self.r[:, 1], self.r[:, 2])
-
 
 # sim = Simulation(500, 1.2e-20, 0.01, 500, 2, 0.05)

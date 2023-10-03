@@ -19,7 +19,7 @@ sim = Simulation(PARTICLE_COUNT, 1.2e-20, 0.01, GAS_TEMP, GAS_VOLUME, TIME_STEP)
 
 
 def update_gas_display(counter):
-    points = sim.get_points()
+    points = (sim.r[:, 0], sim.r[:, 1], sim.r[:, 2])
     return hv.Scatter3D(points)
 
 
@@ -58,6 +58,8 @@ update_temperature_button = pn.widgets.Button(
 update_temperature_button.on_click(
     lambda event: sim.set_temperature(temperature_slider.value)
 )
+view_raw_data_button = pn.widgets.Button(name="View Raw Data", button_type="primary")
+view_raw_data_button.on_click(lambda event: event)
 
 pn.state.add_periodic_callback(advance, period=50)
 
@@ -65,4 +67,5 @@ app = pn.Column(
     "# Ideal Gas Simulator",
     gas_display,
     pn.Row(temperature_slider, update_temperature_button),
+    view_raw_data_button,
 ).servable()
