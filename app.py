@@ -1,6 +1,5 @@
 import panel as pn
 import holoviews as hv
-from holoviews.streams import Pipe
 from streamz import Stream
 
 from simulator import Simulation
