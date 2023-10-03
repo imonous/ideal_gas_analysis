@@ -191,7 +191,6 @@
 # ########################################################################
 
 
-import numpy as np
 import holoviews as hv
 import panel as pn
 
@@ -202,8 +201,8 @@ from simulator import Simulation
 hv.extension("plotly")
 
 TIME_STEP = 0.05
-PARTICLE_COUNT = 2
-GAS_VOLUME = 2
+PARTICLE_COUNT = 100
+GAS_VOLUME = 4
 GAS_SIDE_LEN = GAS_VOLUME ** (1 / 3)
 GAS_TEMP = 237
 
@@ -221,12 +220,13 @@ dmap = hv.DynamicMap(update_gas_display, streams=[counter])
 axis_lims = (-GAS_SIDE_LEN / 2, GAS_SIDE_LEN / 2)
 plot = dmap.opts(
     opts.Scatter3D(
+        title="Ideal Gas Simulator",
+        height=500,
         size=5,
         xlim=axis_lims,
         ylim=axis_lims,
         zlim=axis_lims,
         # responsive=False,
-        title="Ideal Gas Simulator",
         # xaxis=None,
         # yaxis=None,
     )
@@ -242,6 +242,4 @@ def advance():
 
 
 pn.state.add_periodic_callback(advance, period=int(TIME_STEP * 1000))
-
-
 panel.servable()
