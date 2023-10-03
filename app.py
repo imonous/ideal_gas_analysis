@@ -10,14 +10,14 @@ hv.extension("plotly")
 TIME_STEP = 0.2
 PARTICLE_COUNT = 1000
 GAS_VOLUME = 2
-GAS_SIDE_LEN = 2 ** (1 / 3) / 2
+GAS_SIDE_LEN = GAS_VOLUME ** (1 / 3)
 
 sim = Simulation(PARTICLE_COUNT, 1.2e-20, 0.01, 500, GAS_VOLUME, TIME_STEP)
 source = Stream()
 
 
 def display_gas(data):
-    axis_lim = (-GAS_SIDE_LEN, GAS_SIDE_LEN)
+    axis_lim = (-GAS_SIDE_LEN / 2, GAS_SIDE_LEN / 2)
     return hv.Scatter3D(data).opts(size=3, xlim=axis_lim, ylim=axis_lim, zlim=axis_lim)
 
 
