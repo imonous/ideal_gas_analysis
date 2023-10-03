@@ -49,6 +49,18 @@ class Simulation:
 
         self.init_particles()  # INIT PARTICLE POSITIONS AND VELOCITIES
 
+    def _update_velocities(self):
+        v_polar = np.random.random((self.PART, 2))  # RANDOM VELOCITIES PARTx2
+
+        self.v = np.zeros((self.PART, 3))
+
+        self.v[:, 0] = np.sin(v_polar[:, 0] * np.pi) * np.cos(v_polar[:, 1] * 2 * np.pi)
+        self.v[:, 1] = np.sin(v_polar[:, 0] * np.pi) * np.sin(v_polar[:, 1] * 2 * np.pi)
+        self.v[:, 2] = np.cos(v_polar[:, 0] * np.pi)
+
+        vrms = np.sqrt(3 * k_B * self.T / self.MASS)  # RMS VELOCITY
+        self.v *= vrms
+
     def init_particles(self):
         """
         Init the particles positions and velocities.
@@ -61,17 +73,11 @@ class Simulation:
         self.r = np.random.rand(self.PART, 3) * 2 * (self.halfL - self.RAD) - (
             self.halfL - self.RAD
         )  # POSITION
+        self._update_velocities()
 
-        v_polar = np.random.random((self.PART, 2))  # RANDOM VELOCITIES PARTx2
-
-        self.v = np.zeros((self.PART, 3))
-
-        self.v[:, 0] = np.sin(v_polar[:, 0] * np.pi) * np.cos(v_polar[:, 1] * 2 * np.pi)
-        self.v[:, 1] = np.sin(v_polar[:, 0] * np.pi) * np.sin(v_polar[:, 1] * 2 * np.pi)
-        self.v[:, 2] = np.cos(v_polar[:, 0] * np.pi)
-
-        vrms = np.sqrt(3 * k_B * self.T / self.MASS)  # RMS VELOCITY
-        self.v *= vrms
+    def set_temperature(self, T):
+        self.T = T
+        self._update_velocities()
 
     def next_step(self):
         """calculate the next step"""
