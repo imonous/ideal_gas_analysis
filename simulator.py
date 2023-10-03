@@ -76,6 +76,8 @@ class Simulation:
         self._update_velocities()
 
     def set_temperature(self, T):
+        if self.T == T:
+            return
         self.T = T
         self._update_velocities()
 

@@ -1,15 +1,15 @@
 import holoviews as hv
 import panel as pn
 
-
 from holoviews import opts
 from holoviews.streams import Counter
+
 from simulator import Simulation
 
 pn.extension("plotly")
 hv.extension("plotly")
 
-TIME_STEP = 0.05
+TIME_STEP = 0.01
 PARTICLE_COUNT = 100
 GAS_VOLUME = 4
 GAS_SIDE_LEN = GAS_VOLUME ** (1 / 3)
@@ -45,15 +45,21 @@ def advance():
     counter.event(counter=counter.counter + 1)
 
 
-temperature_slider = pn.widgets.IntSlider(value=273, start=0, end=1000)
+temperature_slider = pn.widgets.IntSlider(
+    name="Temperature (K)",
+    value=273,
+    start=0,
+    end=1000,
+    step=5,
+)
 update_temperature_button = pn.widgets.Button(
-    name="Update temperature", button_type="primary"
+    name="Update Temperature", button_type="primary"
 )
 update_temperature_button.on_click(
     lambda event: sim.set_temperature(temperature_slider.value)
 )
 
-pn.state.add_periodic_callback(advance, period=int(TIME_STEP * 1000))
+pn.state.add_periodic_callback(advance, period=50)
 
 app = pn.Column(
     "# Ideal Gas Simulator",
