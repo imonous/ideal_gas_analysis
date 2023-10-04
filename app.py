@@ -1,18 +1,22 @@
 import holoviews as hv
 import panel as pn
-import pandas as pd
+import matplotlib as mpl
+
 from holoviews import opts
 from holoviews.streams import Counter
+
+import pandas as pd
 import io
 
 from simulator import Simulation
 
-pn.extension("plotly", "tabulator")
-pn.config.throttled = True
-hv.extension("plotly")
+mpl.use("agg")
 
-TIME_STEP = 0.01
-PARTICLE_COUNT = 100
+pn.extension(throttled=True)
+hv.extension("matplotlib")
+
+TIME_STEP = 0.05
+PARTICLE_COUNT = 10
 GAS_VOLUME = 4
 GAS_SIDE_LEN = GAS_VOLUME ** (1 / 3)
 GAS_TEMP = 237
@@ -25,17 +29,29 @@ def update_gas_display(counter):
     return hv.Scatter3D(points)
 
 
-counter = Counter(transient=True)
-dmap = hv.DynamicMap(update_gas_display, streams=[counter])
+def remove_ticks(plot, element):
+    plot.handles["axis"].set_xticklabels([])
+    plot.handles["axis"].set_yticklabels([])
+    plot.handles["axis"].set_zticklabels([])
 
+
+counter = Counter(transient=True)
 
 axis_lims = (-GAS_SIDE_LEN / 2, GAS_SIDE_LEN / 2)
-plot = dmap.opts(
+plot = hv.DynamicMap(update_gas_display, streams=[counter]).opts(
     opts.Scatter3D(
-        size=5,
+        title="Gas Display",
+        apply_ranges=False,
+        labelled=[],
         xlim=axis_lims,
         ylim=axis_lims,
         zlim=axis_lims,
+        azimuth=40,
+        elevation=20,
+        color="z",
+        cmap="fire",
+        s=10,
+        hooks=[remove_ticks],
     )
 )
 
@@ -45,7 +61,7 @@ def advance():
     counter.event(counter=counter.counter + 1)
 
 
-gas_display = pn.pane.HoloViews(plot, center=True, backend="plotly")
+gas_display = pn.pane.HoloViews(plot)
 periodic_callback = pn.state.add_periodic_callback(advance, period=50)
 
 
