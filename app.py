@@ -1,9 +1,9 @@
 import holoviews as hv
 import panel as pn
 import pandas as pd
-
 from holoviews import opts
 from holoviews.streams import Counter
+import io
 
 from simulator import Simulation
 
@@ -59,17 +59,24 @@ update_temperature_button = pn.widgets.Button(
 update_temperature_button.on_click(
     lambda event: sim.set_temperature(temperature_slider.value)
 )
-view_raw_data_button = pn.widgets.Button(name="View Raw Data", button_type="primary")
-view_raw_data_button.on_click(lambda event: event)
 
 
 def get_raw_data():
-    return pd.DataFrame(
-        {"Velocity (m/s)": [120, 100, 80, 10], "Number of particles": [8, 10, 6, 5]},
+    csv_buffer = io.BytesIO()
+    df = pd.DataFrame(
+        {
+            "x velocity (m/s)": sim.r[:, 0],
+            "y velocity (m/s)": sim.r[:, 1],
+            "z velocity (m/s)": sim.r[:, 2],
+        }
     )
+    df.to_csv(csv_buffer, index=False)
+    return csv_buffer
 
 
-raw_data_table = pn.widgets.Tabulator(get_raw_data(), show_index=False)
+raw_data_download = pn.widgets.FileDownload(
+    file=get_raw_data(), filename="raw_data.csv"
+)
 
 
 pn.state.add_periodic_callback(advance, period=50)
@@ -79,8 +86,7 @@ app = pn.template.BootstrapTemplate(
     sidebar=[
         temperature_slider,
         update_temperature_button,
-        view_raw_data_button,
-        raw_data_table,
+        raw_data_download,
     ],
 )
 app.main.append(gas_display)
