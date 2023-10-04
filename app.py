@@ -40,7 +40,6 @@ counter = Counter(transient=True)
 axis_lims = (-GAS_SIDE_LEN / 2, GAS_SIDE_LEN / 2)
 plot = hv.DynamicMap(update_gas_display, streams=[counter]).opts(
     opts.Scatter3D(
-        title="Gas Display",
         apply_ranges=False,
         labelled=[],
         xlim=axis_lims,
