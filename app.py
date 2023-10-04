@@ -16,6 +16,8 @@ pn.extension(
     throttled=True,
     disconnect_notification="Connection lost, try reloading the page!",
     ready_notification="Application fully loaded.",
+    # defer_load=True,
+    # loading_indicator=False,
 )
 hv.extension("matplotlib")
 
@@ -102,6 +104,7 @@ def get_raw_data():
 raw_data_download = pn.widgets.FileDownload(
     callback=get_raw_data, filename="raw_data.csv"
 )
+
 
 toggle_simulation = pn.widgets.Button(name="Pause Simulation")
 
