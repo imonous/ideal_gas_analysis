@@ -1,34 +1,16 @@
 """ 
+
 BASED ON: https://github.com/labay11/ideal-gas-simulation 
 
 Memory usage: linear => N/10 MiB, where N is the number of particles
 CPU heavy
+
 """
 
 
 import numpy as np
 
 k_B = 1.380648e-23  # boltzmann contant (J/K)
-
-
-def mod(v):
-    """computes the squared sum over the last axis of the numpy.ndarray v"""
-    return np.sum(v * v, axis=-1)
-
-
-def pmod(v, T, m):
-    """
-    Maxwell-Boltzmann's distribuion of probability
-    for the length of the velocity vector v at temprature T
-    for a particle of mass m
-    """
-    return (
-        4
-        * np.pi
-        * v**2
-        * np.power(m / (2 * np.pi * k_B * T), 3 / 2)
-        * np.exp(-m * v**2 / (2 * k_B * T))
-    )
 
 
 class Simulation:
@@ -111,5 +93,20 @@ class Simulation:
         self.v[walls] *= -1
         self.r[walls] -= self.RAD * np.sign(self.r[walls])
 
+    def mod(v):
+        """computes the squared sum over the last axis of the numpy.ndarray v"""
+        return np.sum(v * v, axis=-1)
 
-# sim = Simulation(500, 1.2e-20, 0.01, 500, 2, 0.05)
+    def pmod(v, T, m):
+        """
+        Maxwell-Boltzmann's distribuion of probability
+        for the length of the velocity vector v at temprature T
+        for a particle of mass m
+        """
+        return (
+            4
+            * np.pi
+            * v**2
+            * np.power(m / (2 * np.pi * k_B * T), 3 / 2)
+            * np.exp(-m * v**2 / (2 * k_B * T))
+        )
