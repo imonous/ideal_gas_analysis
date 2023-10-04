@@ -80,7 +80,7 @@ def get_raw_data():
 
 
 raw_data_download = pn.widgets.FileDownload(
-    name="Download Raw Data", callback=get_raw_data, filename="raw_data.csv"
+    callback=get_raw_data, filename="raw_data.csv"
 )
 
 toggle_simulation = pn.widgets.Button(name="Pause Simulation")
