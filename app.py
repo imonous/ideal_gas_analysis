@@ -27,6 +27,7 @@ def update_gas_display(counter):
 counter = Counter(transient=True)
 dmap = hv.DynamicMap(update_gas_display, streams=[counter])
 
+
 axis_lims = (-GAS_SIDE_LEN / 2, GAS_SIDE_LEN / 2)
 plot = dmap.opts(
     opts.Scatter3D(
@@ -38,12 +39,13 @@ plot = dmap.opts(
 )
 
 
-gas_display = pn.pane.HoloViews(plot, center=True, backend="plotly")
-
-
 def advance():
     sim.next_step()
     counter.event(counter=counter.counter + 1)
+
+
+gas_display = pn.pane.HoloViews(plot, center=True, backend="plotly")
+periodic_callback = pn.state.add_periodic_callback(advance, period=50)
 
 
 temperature_slider = pn.widgets.IntSlider(
@@ -51,18 +53,19 @@ temperature_slider = pn.widgets.IntSlider(
     value=273,
     start=0,
     end=1000,
-    step=5,
+    step=3,
 )
-update_temperature_button = pn.widgets.Button(
-    name="Update Temperature", button_type="primary"
-)
-update_temperature_button.on_click(
-    lambda event: sim.set_temperature(temperature_slider.value)
-)
+
+
+def temperature_slider_callback(event):
+    if event.type == "changed":
+        sim.set_temperature(event.new)
+
+
+temperature_slider.param.watch(temperature_slider_callback, ["value"])
 
 
 def get_raw_data():
-    csv_buffer = io.BytesIO()
     df = pd.DataFrame(
         {
             "x velocity (m/s)": sim.r[:, 0],
@@ -70,23 +73,37 @@ def get_raw_data():
             "z velocity (m/s)": sim.r[:, 2],
         }
     )
-    df.to_csv(csv_buffer, index=False)
-    return csv_buffer
+    file = io.BytesIO()
+    df.to_csv(file, index=False)
+    file.seek(0)
+    return file
 
 
 raw_data_download = pn.widgets.FileDownload(
-    file=get_raw_data(), filename="raw_data.csv"
+    name="Download Raw Data", callback=get_raw_data, filename="raw_data.csv"
 )
 
+toggle_simulation = pn.widgets.Button(name="Pause Simulation")
 
-pn.state.add_periodic_callback(advance, period=50)
+
+def toggle_simulation_callback(event):
+    if toggle_simulation.clicks % 2 != 0:
+        toggle_simulation.name = "Resume Simulation"
+        periodic_callback.stop()
+    else:
+        toggle_simulation.name = "Pause Simulation"
+        periodic_callback.start()
+
+
+toggle_simulation.on_click(toggle_simulation_callback)
+
 
 app = pn.template.BootstrapTemplate(
     title="Ideal Gas Simulator",
     sidebar=[
         temperature_slider,
-        update_temperature_button,
         raw_data_download,
+        toggle_simulation,
     ],
 )
 app.main.append(gas_display)
