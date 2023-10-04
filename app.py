@@ -8,6 +8,7 @@ import io
 from simulator import Simulation
 
 pn.extension("plotly", "tabulator")
+pn.config.throttled = True
 hv.extension("plotly")
 
 TIME_STEP = 0.01
@@ -98,7 +99,7 @@ def toggle_simulation_callback(event):
 toggle_simulation.on_click(toggle_simulation_callback)
 
 
-app = pn.template.BootstrapTemplate(
+app = pn.template.VanillaTemplate(
     title="Ideal Gas Simulator",
     sidebar=[
         temperature_slider,
@@ -106,5 +107,5 @@ app = pn.template.BootstrapTemplate(
         toggle_simulation,
     ],
 )
-app.main.append(gas_display)
+app.main.append(pn.WidgetBox(gas_display))
 app.servable()
