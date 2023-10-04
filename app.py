@@ -45,11 +45,11 @@ plot = hv.DynamicMap(update_gas_display, streams=[counter]).opts(
         xlim=axis_lims,
         ylim=axis_lims,
         zlim=axis_lims,
-        azimuth=40,
-        elevation=20,
-        color="z",
-        cmap="fire",
-        s=10,
+        azimuth=45,
+        elevation=10,
+        color="x",
+        cmap="kr",
+        s=20,
         hooks=[remove_ticks],
     )
 )
@@ -61,7 +61,7 @@ def advance():
 
 
 gas_display = pn.pane.HoloViews(plot)
-periodic_callback = pn.state.add_periodic_callback(advance, period=50)
+periodic_callback = pn.state.add_periodic_callback(advance, period=int(0.2 * 10**3))
 
 
 temperature_slider = pn.widgets.IntSlider(
