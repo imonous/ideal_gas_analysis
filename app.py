@@ -12,7 +12,11 @@ from simulator import Simulation
 
 mpl.use("agg")
 
-pn.extension(throttled=True)
+pn.extension(
+    throttled=True,
+    disconnect_notification="Connection lost, try reloading the page!",
+    ready_notification="Application fully loaded.",
+)
 hv.extension("matplotlib")
 
 TIME_STEP = 0.05
