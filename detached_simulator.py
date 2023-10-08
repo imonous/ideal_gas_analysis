@@ -6,7 +6,6 @@
     Script variables:
         SLIPE_EVERY_ITER : time to sleep every iteration in seconds
         BACKUP_ITER      : backup every BACKUP_ITER iterations
-        OUT_FILE_PATH    : result file path
         TIME_TO_RUN      : total time in seconds to run the simulation
         VERBOSE          : whether to log the time passed and notify backups
 
@@ -17,6 +16,8 @@
     real-time, given sufficient computing resources. Otherwise, a larger time 
     step would be required, which would result in less accuracy.
 
+    Data is backed up to "./out.csv".
+
 """
 
 
@@ -25,18 +26,23 @@ from simulator import Simulation
 from time import sleep
 
 
-def run(sim, sleep_every_iter, backup_iter, out_file_path, total_iter, sim_dt, verbose):
+def save_np_arr(arr, out_file_path="out.csv"):
+    np.savetxt(out_file_path, arr, delimiter=",")
+
+
+def run(sim, sleep_every_iter, backup_iter, total_iter, sim_dt, verbose):
     for it in range(total_iter):
         sim.next_step()
         if verbose:
             print(f"it {it} => {it * sim_dt}s...")
         if it == backup_iter:
-            np.savetxt(out_file_path, sim.r, delimiter=",")
-            print(f"Data backed up...")
+            save_np_arr(sim.r)
             backup_iter *= 2
+            if verbose:
+                print(f"Data backed up...")
         it += 1
         sleep(sleep_every_iter)
-    np.savetxt(out_file_path, sim.r, delimiter=",")
+    save_np_arr(sim.r)
 
 
 if __name__ == "__main__":
@@ -53,7 +59,6 @@ if __name__ == "__main__":
         sim=sim,
         sleep_every_iter=0,
         backup_iter=10**2,
-        out_file_path="./out.csv",
         total_iter=10**5,
         sim_dt=SIM_dt,
         verbose=True,
