@@ -59,7 +59,13 @@ class Simulation:
         self.halfL = self.L / 2  # HALF SIDE LENGTH
 
         self.dt = dt  # TIME DIFFERENCE EACH STEP
-        self.dv = 0.2  # DIFFERENCE IN VELOCITY EACH STEP
+
+        self.max_v = np.sqrt(2 * k_B * self.T / self.MASS)
+        self.min_v = 0
+
+        # histogram
+        self.bin_width = 0.2
+        self.bin_count = int((self.max_v * 3 - self.min_v) / self.bin_width)
 
         self.init_particles()  # INIT PARTICLE POSITIONS AND VELOCITIES
 
@@ -124,3 +130,16 @@ class Simulation:
         walls = np.nonzero(np.abs(self.r) + self.RAD > self.halfL)
         self.v[walls] *= -1
         self.r[walls] -= self.RAD * np.sign(self.r[walls])
+
+    def get_velocities(self):
+        return np.sqrt(mod(self.r))
+
+    def get_histogram(self):
+        hist = np.array([])
+        vel = self.get_velocities()
+        for i in range(self.bin_count):
+            bin = np.count_nonzero(
+                (i * self.bin_width < vel) & (vel < (i + 1) * self.bin_width)
+            )
+            np.append(hist, bin)
+        return hist
