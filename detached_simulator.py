@@ -54,18 +54,24 @@ def run(sim, sleep_every_iter, backup_iter, total_iter, verbose):
 
 
 if __name__ == "__main__":
-    sim = Simulation(
-        n_particles=1000,
-        mass=1.2e-20,
-        rad=0.01,
-        T=237,
-        V=None,
-        dt=0.01,
-    )
-    run(
-        sim=sim,
-        sleep_every_iter=0,
-        backup_iter=10**2,
-        total_iter=10**5,
-        verbose=True,
-    )
+    temps = np.linspace(0, 1000, 5)
+    fake_mbd = np.array([])
+    for T in temps:
+        sim = Simulation(
+            n_particles=1000,
+            mass=1.2e-20,
+            rad=0.01,
+            T=237,
+            V=None,
+            dt=0.01,
+        )
+        run(
+            sim=sim,
+            sleep_every_iter=0,
+            backup_iter=10**2,
+            total_iter=10**5,
+            verbose=True,
+        )
+        parts_above_vrms = sim.get_velocities() > sim.vrms
+        np.append(fake_mbd, parts_above_vrms)
+    print(temps, fake_mbd)

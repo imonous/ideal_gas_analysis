@@ -78,8 +78,8 @@ class Simulation:
         self.v[:, 1] = np.sin(v_polar[:, 0] * np.pi) * np.sin(v_polar[:, 1] * 2 * np.pi)
         self.v[:, 2] = np.cos(v_polar[:, 0] * np.pi)
 
-        vrms = np.sqrt(3 * k_B * self.T / self.MASS)  # RMS VELOCITY
-        self.v *= vrms
+        self.vrms = np.sqrt(3 * k_B * self.T / self.MASS)  # RMS VELOCITY
+        self.v *= self.vrms
 
     def init_particles(self):
         """
