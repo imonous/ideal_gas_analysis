@@ -3,16 +3,7 @@
 BASED ON: https://github.com/labay11/ideal-gas-simulation 
 
 * Memory usage: linear => N/10 MiB, where N is the number of particles
-* Computationally heavy
-
-In order for collisions to happen on a "short" period of time so as to see how the 
-velocities converge to the Maxwell-Boltzmann distribution, the radius of the particles 
-must be ~(V/N)^(1/3). Otherwise, the momentum exchanged after each iteration will be 
-small.
-
-Second, the way preassure is calculated is a bit tricky because if dt is two big then 
-the particle will pass through the wall without collinding and, as a consequence, 
-without exchanging momenta with the walls.
+* However, CPU heavy
 
 """
 
@@ -20,6 +11,16 @@ without exchanging momenta with the walls.
 import numpy as np
 
 k_B = 1.380648e-23  # boltzmann contant (J/K)
+
+
+def optimal_volume(r, N):
+    """
+    In order for collisions to happen on a "short" period of time so as to see how
+    the velocities converge to the Maxwell-Boltzmann distribution, the radius of the
+    particles must be ~(V/N)^(1/3). Otherwise, the momentum exchanged after each
+    iteration will be small.
+    """
+    return r**3 * N
 
 
 def mod(v):

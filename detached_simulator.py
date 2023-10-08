@@ -5,10 +5,10 @@
 
     Script variables:
         SLIPE_EVERY_ITER : time to sleep every iteration in seconds
-        BACKUP_ITER  : backup every BACKUP_ITER iterations
-        OUT_FILE_PATH: result file path
-        TIME_TO_RUN  : total time in seconds to run the simulation
-        VERBOSE      : whether to log the time passed and notify backups
+        BACKUP_ITER      : backup every BACKUP_ITER iterations
+        OUT_FILE_PATH    : result file path
+        TIME_TO_RUN      : total time in seconds to run the simulation
+        VERBOSE          : whether to log the time passed and notify backups
 
     Simulation variables (see simulator.py): NUM_PARTICLES, PARTICLE_m,
     PARTICLE_r, GAS_T, GAS_V, SIM_dt.
@@ -18,6 +18,10 @@
     step would be required, which would result in less accuracy.
 
 """
+
+
+from simulator import optimal_volume, Simulation
+from time import sleep
 
 
 from simulator import Simulation
@@ -33,7 +37,7 @@ NUM_PARTICLES = 1000
 PARTICLE_m = 1.2e-20
 PARTICLE_r = 0.01
 GAS_T = 237
-GAS_V = 2
+GAS_V = optimal_volume(PARTICLE_r, NUM_PARTICLES)
 SIM_dt = 0.01
 
 sim = Simulation(NUM_PARTICLES, PARTICLE_m, PARTICLE_r, GAS_T, GAS_V, SIM_dt)
