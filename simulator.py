@@ -44,7 +44,7 @@ def pmod(v, T, m):
 
 
 class Simulation:
-    def __init__(self, n_particles, mass, rad, T, V, dt=0.2):
+    def __init__(self, n_particles, mass, rad, T, V, dt):
         self.PART = n_particles  # PARTICLE NUMBER
         self.MASS = mass
         self.RAD = rad  # PARTICLE RADIUS
@@ -52,6 +52,8 @@ class Simulation:
 
         self.T = T  # SYSTEM TEMPERATURE
         self.V = V
+        if V is None:
+            self.V = optimal_volume(self.RAD, self.PART)
 
         self.L = np.power(self.V, 1 / 3)  # SIDE LENGTH
         self.halfL = self.L / 2  # HALF SIDE LENGTH
