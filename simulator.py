@@ -23,6 +23,11 @@ def optimal_volume(r, N):
     return r**3 * N
 
 
+def mod(v):
+    """computes the squared sum over the last axis of the numpy.ndarray v"""
+    return np.sum(v * v, axis=-1)
+
+
 def pmod(v, T, m):
     """
     Maxwell-Boltzmann's distribuion of probability
