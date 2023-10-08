@@ -26,18 +26,26 @@ from simulator import Simulation
 from time import sleep
 
 
-def save_np_arr(arr, out_file_path="out.csv"):
+OUT_FILE_PATH = "./out.csv"
+
+
+def save_np_arr(arr, out_file_path=OUT_FILE_PATH):
     np.savetxt(out_file_path, arr, delimiter=",")
 
 
-def run(sim, sleep_every_iter, backup_iter, total_iter, sim_dt, verbose):
+def load_np_arr(out_file_path=OUT_FILE_PATH):
+    return np.genfromtxt(out_file_path, delimiter=",")
+
+
+def run(sim, sleep_every_iter, backup_iter, total_iter, verbose):
+    times_backed = 1
     for it in range(total_iter):
         sim.next_step()
         if verbose:
-            print(f"it {it} => {it * sim_dt}s...")
-        if it == backup_iter:
-            save_np_arr(sim.r)
-            backup_iter *= 2
+            print(f"{it}/{total_iter}")
+        if it == backup_iter * times_backed:
+            save_np_arr(sim.get_velocities())
+            times_backed += 1
             if verbose:
                 print(f"Data backed up...")
         it += 1
@@ -46,20 +54,18 @@ def run(sim, sleep_every_iter, backup_iter, total_iter, sim_dt, verbose):
 
 
 if __name__ == "__main__":
-    SIM_dt = 0.01
     sim = Simulation(
         n_particles=1000,
         mass=1.2e-20,
         rad=0.01,
         T=237,
         V=None,
-        dt=SIM_dt,
+        dt=0.01,
     )
     run(
         sim=sim,
         sleep_every_iter=0,
         backup_iter=10**2,
         total_iter=10**5,
-        sim_dt=SIM_dt,
         verbose=True,
     )
