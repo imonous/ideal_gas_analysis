@@ -1,4 +1,5 @@
 """
+
     This script executes the simulator with no GUI attached, returning only the
     results (particle velocities). 
 
@@ -15,7 +16,10 @@
     Using this script makes it realistic to run the simulation much faster than 
     real-time, given sufficient computing resources. Otherwise, a larger time 
     step would be required, which would result in less accuracy.
+
 """
+
+
 from simulator import Simulation
 from time import sleep
 
