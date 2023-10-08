@@ -23,33 +23,36 @@
 from simulator import optimal_volume, Simulation
 from time import sleep
 
-
 from simulator import Simulation
 from time import sleep
 
-SLEEP_EVERY_ITER = 0
-BACKUP_ITER = 10**2
-# OUT_FILE_PATH = ""
-TIME_TO_RUN = 60 * 1
-VERBOSE = False
 
-NUM_PARTICLES = 1000
-PARTICLE_m = 1.2e-20
-PARTICLE_r = 0.01
-GAS_T = 237
-GAS_V = optimal_volume(PARTICLE_r, NUM_PARTICLES)
-SIM_dt = 0.01
+def run(sim, sleep_every_iter, backup_iter, total_iter, verbose):
+    for it in range(total_iter):
+        sim.next_step()
+        if verbose:
+            print(f"it {it} => {iter * SIM_dt}s...")
+        if backup_iter % it == 0:
+            print(f"Data backed up...")
+        iter += 1
+        sleep(sleep_every_iter)
 
-sim = Simulation(NUM_PARTICLES, PARTICLE_m, PARTICLE_r, GAS_T, GAS_V, SIM_dt)
-# out_file = open(OUT_FILE_PATH)
 
-iter = 0
-while True:
-    sim.next_step()
-    # if iter % BACKUP_ITER == 0:
-    #     out_file.write(sim.r)
-    print(f"Running for {iter * SIM_dt}s...")
-    iter += 1
-    if iter * SIM_dt >= TIME_TO_RUN:
-        break
-    sleep(SLEEP_EVERY_ITER)
+if __name__ == "__main__":
+    SLEEP_EVERY_ITER = 0
+    BACKUP_ITER = 10**2
+    # OUT_FILE_PATH = ""
+    TOTAL_ITER = 10**5
+    VERBOSE = False
+
+    NUM_PARTICLES = 1000
+    PARTICLE_m = 1.2e-20
+    PARTICLE_r = 0.01
+    GAS_T = 237
+    GAS_V = optimal_volume(PARTICLE_r, NUM_PARTICLES)
+    SIM_dt = 0.01
+
+    sim = Simulation(NUM_PARTICLES, PARTICLE_m, PARTICLE_r, GAS_T, GAS_V, SIM_dt)
+    # out_file = open(OUT_FILE_PATH)
+
+    run(sim, SLEEP_EVERY_ITER, BACKUP_ITER, TOTAL_ITER, VERBOSE)
