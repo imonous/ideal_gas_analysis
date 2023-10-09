@@ -20,8 +20,8 @@
 """
 
 
-import numpy as np
 from simulator import Simulation
+import holoviews as hv
 
 
 def run(
@@ -50,9 +50,10 @@ if __name__ == "__main__":
     vrms = 0
     for i, T in enumerate(temps):
         sim = Simulation(n_particles=1000, mass=1.2e-20, rad=0.01, T=T, dt=0.01)
-        if i == 0:
-            vrms = sim.vrms
         run(sim, total_iter=500, backup=False)
-        parts_above_vrms = sim.get_velocities() > vrms
-        np.append(fake_mbd, parts_above_vrms)
+        velocities = sim.get_velocities()
+        if i == 0:
+            vrms = np.average(velocities)
+        parts_above_vrms = np.count_nonzero(velocities > vrms)
+        fake_mbd = np.append(fake_mbd, parts_above_vrms)
     print(temps, fake_mbd)

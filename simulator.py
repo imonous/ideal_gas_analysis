@@ -142,7 +142,7 @@ class Simulation:
             bin = np.count_nonzero(
                 (i * self.bin_width < vel) & (vel < (i + 1) * self.bin_width)
             )
-            np.append(hist, bin)
+            hist = np.append(hist, bin)
         return hist
 
     def save_object(self, filename="data.pkl"):
