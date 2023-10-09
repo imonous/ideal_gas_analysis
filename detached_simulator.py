@@ -15,6 +15,8 @@
 
     Data is backed up to "./data.pkl" by default.
 
+    TODO: Add run info file.
+
 """
 
 
@@ -22,7 +24,9 @@ import numpy as np
 from simulator import Simulation
 
 
-def run(sim, total_iter, verbose=True, backup_iter=0, out_file_path="data.pkl"):
+def run(
+    sim, total_iter, backup=True, backup_iter=0, verbose=True, out_file_path="data.pkl"
+):
     try:
         times_backed = 0
         for it in range(total_iter):
@@ -34,23 +38,21 @@ def run(sim, total_iter, verbose=True, backup_iter=0, out_file_path="data.pkl"):
                 sim.save_object(out_file_path)
                 times_backed += 1
                 print(f"Data backed up...")
-        sim.save_object(out_file_path)
+        if backup:
+            sim.save_object(out_file_path)
     except KeyboardInterrupt:
         sim.save_object(out_file_path)
 
 
 if __name__ == "__main__":
-    # temps = np.linspace(0, 2000, 3)
-    # fake_mbd = np.array([])
-    # for T in temps:
-    sim = Simulation(
-        n_particles=1000,
-        mass=1.2e-20,
-        rad=0.01,
-        T=237,
-        dt=0.01,
-    )
-    run(sim, total_iter=500)
-    #     parts_above_vrms = sim.get_velocities() > sim.vrms
-    #     np.append(fake_mbd, parts_above_vrms)
-    # print(temps, fake_mbd)
+    temps = np.linspace(273, 2000, 3)
+    fake_mbd = np.array([])
+    vrms = 0
+    for i, T in enumerate(temps):
+        sim = Simulation(n_particles=1000, mass=1.2e-20, rad=0.01, T=T, dt=0.01)
+        if i == 0:
+            vrms = sim.vrms
+        run(sim, total_iter=500, backup=False)
+        parts_above_vrms = sim.get_velocities() > vrms
+        np.append(fake_mbd, parts_above_vrms)
+    print(temps, fake_mbd)
