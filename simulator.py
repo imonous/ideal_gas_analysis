@@ -9,6 +9,7 @@ BASED ON: https://github.com/labay11/ideal-gas-simulation
 
 
 import numpy as np
+import pickle
 
 k_B = 1.380648e-23  # boltzmann contant (J/K)
 
@@ -44,7 +45,7 @@ def pmod(v, T, m):
 
 
 class Simulation:
-    def __init__(self, n_particles, mass, rad, T, V, dt):
+    def __init__(self, n_particles, mass, rad, T, dt, V=None):
         self.PART = n_particles  # PARTICLE NUMBER
         self.MASS = mass
         self.RAD = rad  # PARTICLE RADIUS
@@ -143,3 +144,11 @@ class Simulation:
             )
             np.append(hist, bin)
         return hist
+
+    def save_object(self, filename="data.pkl"):
+        with open(filename, "wb") as f:
+            pickle.dump(self, f, pickle.HIGHEST_PROTOCOL)
+
+    def load_object(filename="data.pkl"):
+        with open(filename, "rb") as f:
+            return pickle.load(f)

@@ -23,38 +23,25 @@
 
 import numpy as np
 from simulator import Simulation
-from time import sleep
 
 
-OUT_FILE_PATH = "./out.csv"
-
-
-def save_np_arr(arr, out_file_path=OUT_FILE_PATH):
-    np.savetxt(out_file_path, arr, delimiter=",")
-
-
-def load_np_arr(out_file_path=OUT_FILE_PATH):
-    return np.genfromtxt(out_file_path, delimiter=",")
-
-
-def run(sim, sleep_every_iter, backup_iter, total_iter, verbose):
+def run(sim, total_iter, verbose=True, backup_iter=-1, out_file_path="data.pkl"):
     times_backed = 1
     for it in range(total_iter):
         sim.next_step()
         if verbose:
             print(f"{it}/{total_iter}")
         if it == backup_iter * times_backed:
-            save_np_arr(sim.get_velocities())
+            sim.save_object(out_file_path)
             times_backed += 1
             if verbose:
                 print(f"Data backed up...")
         it += 1
-        sleep(sleep_every_iter)
-    save_np_arr(sim.r)
+    sim.save_object(out_file_path)
 
 
 if __name__ == "__main__":
-    temps = np.linspace(0, 1000, 5)
+    temps = np.linspace(0, 2000, 3)
     fake_mbd = np.array([])
     for T in temps:
         sim = Simulation(
@@ -62,16 +49,9 @@ if __name__ == "__main__":
             mass=1.2e-20,
             rad=0.01,
             T=237,
-            V=None,
             dt=0.01,
         )
-        run(
-            sim=sim,
-            sleep_every_iter=0,
-            backup_iter=10**2,
-            total_iter=10**5,
-            verbose=True,
-        )
+        run(sim, total_iter=500)
         parts_above_vrms = sim.get_velocities() > sim.vrms
         np.append(fake_mbd, parts_above_vrms)
     print(temps, fake_mbd)
