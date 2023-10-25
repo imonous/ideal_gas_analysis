@@ -21,26 +21,23 @@
 
 
 from simulator import Simulation
-import holoviews as hv
+import numpy as np
 
 
 def run(
     sim, total_iter, backup=True, backup_iter=0, verbose=True, out_file_path="data.pkl"
 ):
-    try:
-        times_backed = 0
-        for it in range(total_iter):
-            sim.next_step()
-            if verbose:
-                print(f"{it}/{total_iter}")
-            it += 1
-            if it == backup_iter * (times_backed + 1):
-                sim.save_object(out_file_path)
-                times_backed += 1
-                print(f"Data backed up...")
-        if backup:
+    times_backed = 0
+    for it in range(total_iter):
+        sim.next_step()
+        if verbose:
+            print(f"{it}/{total_iter}")
+        it += 1
+        if it == backup_iter * (times_backed + 1):
             sim.save_object(out_file_path)
-    except KeyboardInterrupt:
+            times_backed += 1
+            print(f"Data backed up...")
+    if backup:
         sim.save_object(out_file_path)
 
 
