@@ -1,17 +1,17 @@
 import holoviews as hv
 import panel as pn
 import matplotlib as mpl
+import pandas as pd
+import io
 
 from holoviews import opts
 from holoviews.streams import Counter
 
-import pandas as pd
-import io
-
 from simulator import Simulation
 
-mpl.use("agg")
 
+APP_TIME_STEP = 0.1e3
+mpl.use("agg")
 pn.extension(
     throttled=True,
     disconnect_notification="Connection lost, try reloading the page!",
@@ -20,14 +20,7 @@ pn.extension(
     # loading_indicator=False,
 )
 hv.extension("matplotlib")
-
-TIME_STEP = 0.05
-PARTICLE_COUNT = 10
-GAS_VOLUME = 4
-GAS_SIDE_LEN = GAS_VOLUME ** (1 / 3)
-GAS_TEMP = 237
-
-sim = Simulation(PARTICLE_COUNT, 1.2e-20, 0.01, GAS_TEMP, GAS_VOLUME, TIME_STEP)
+sim = Simulation(n_particles=10, mass=1.2e-20, rad=0.01, T=237, dt=0.05, V=2)
 
 
 def update_gas_display(counter):
@@ -43,14 +36,13 @@ def remove_ticks(plot, element):
 
 counter = Counter(transient=True)
 
-axis_lims = (-GAS_SIDE_LEN / 2, GAS_SIDE_LEN / 2)
 plot = hv.DynamicMap(update_gas_display, streams=[counter]).opts(
     opts.Scatter3D(
         apply_ranges=False,
         labelled=[],
-        xlim=axis_lims,
-        ylim=axis_lims,
-        zlim=axis_lims,
+        xlim=(-sim.halfL, sim.halfL),
+        ylim=(-sim.halfL, sim.halfL),
+        zlim=(-sim.halfL, sim.halfL),
         azimuth=45,
         elevation=10,
         color="x",
@@ -67,7 +59,7 @@ def advance():
 
 
 gas_display = pn.pane.HoloViews(plot)
-periodic_callback = pn.state.add_periodic_callback(advance, period=int(0.2 * 10**3))
+periodic_callback = pn.state.add_periodic_callback(advance, period=int(APP_TIME_STEP))
 
 
 temperature_slider = pn.widgets.IntSlider(

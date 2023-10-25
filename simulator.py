@@ -20,6 +20,8 @@ def optimal_volume(r, N):
     the velocities converge to the Maxwell-Boltzmann distribution, the radius of the
     particles must be ~(V/N)^(1/3). Otherwise, the momentum exchanged after each
     iteration will be small.
+
+    Unusable for radius (roughly) <1.
     """
     return r**3 * N
 
@@ -53,7 +55,7 @@ class Simulation:
 
         self.T = T  # SYSTEM TEMPERATURE
         self.V = V
-        if V is None:
+        if V is None:  # TODO: FIX! DOESNT WORK
             self.V = optimal_volume(self.RAD, self.PART)
 
         self.L = np.power(self.V, 1 / 3)  # SIDE LENGTH
