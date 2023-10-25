@@ -25,7 +25,7 @@ import numpy as np
 
 
 def run(
-    sim, total_iter, backup=True, backup_iter=0, verbose=True, out_file_path="data.pkl"
+    sim, total_iter, backup=False, backup_iter=0, verbose=True, out_file_path="data.pkl"
 ):
     times_backed = 0
     for it in range(total_iter):
@@ -42,15 +42,17 @@ def run(
 
 
 if __name__ == "__main__":
-    temps = np.linspace(273, 2000, 3)
-    fake_mbd = np.array([])
-    vrms = 0
-    for i, T in enumerate(temps):
-        sim = Simulation(n_particles=1000, mass=1.2e-20, rad=0.01, T=T, dt=0.01)
-        run(sim, total_iter=500, backup=False)
-        velocities = sim.get_velocities()
-        if i == 0:
-            vrms = np.average(velocities)
-        parts_above_vrms = np.count_nonzero(velocities > vrms)
-        fake_mbd = np.append(fake_mbd, parts_above_vrms)
-    print(temps, fake_mbd)
+    RANGE = (200, 2000)
+    TRIALS = 5
+    TEMP_COUNT = 10
+    ITER_COUNT = 10**3
+
+    temps = np.linspace(RANGE[0], RANGE[1], TEMP_COUNT)
+    for _ in range(TRIALS):
+        # implement proper save
+        for i, T in enumerate(temps):
+            sim = Simulation(
+                n_particles=1000, mass=1.2e-20, rad=0.01, T=T, dt=0.01, V=1
+            )
+            run(sim, total_iter=ITER_COUNT)
+        sim.save_object()
