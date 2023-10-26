@@ -20,7 +20,7 @@
 """
 
 
-from simulator import Simulation
+from simulation import Simulation
 import numpy as np
 
 

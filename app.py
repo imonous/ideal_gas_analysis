@@ -7,7 +7,7 @@ import io
 from holoviews import opts
 from holoviews.streams import Counter
 
-from simulator import Simulation
+from simulation import Simulation
 
 
 APP_TIME_STEP = 0.1e3
