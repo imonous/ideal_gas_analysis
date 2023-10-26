@@ -24,35 +24,27 @@ from simulator import Simulation
 import numpy as np
 
 
-def run(
-    sim, total_iter, backup=False, backup_iter=0, verbose=True, out_file_path="data.pkl"
-):
-    times_backed = 0
+def run(sim, total_iter, verbose=True, out_file_path="data.pkl"):
     for it in range(total_iter):
         sim.next_step()
         if verbose:
             print(f"{it}/{total_iter}")
-        it += 1
-        if it == backup_iter * (times_backed + 1):
-            sim.save_object(out_file_path)
-            times_backed += 1
-            print(f"Data backed up...")
-    if backup:
-        sim.save_object(out_file_path)
+    sim.save_object(out_file_path)
 
 
 if __name__ == "__main__":
-    RANGE = (200, 2000)
-    TRIALS = 5
-    TEMP_COUNT = 10
-    ITER_COUNT = 10**3
+    pass
+    # RANGE = (200, 2000)
+    # TRIALS = 5
+    # TEMP_COUNT = 10
+    # ITER_COUNT = 10**3
 
-    temps = np.linspace(RANGE[0], RANGE[1], TEMP_COUNT)
-    for _ in range(TRIALS):
-        # implement proper save
-        for i, T in enumerate(temps):
-            sim = Simulation(
-                n_particles=1000, mass=1.2e-20, rad=0.01, T=T, dt=0.01, V=1
-            )
-            run(sim, total_iter=ITER_COUNT)
-        sim.save_object()
+    # temps = np.linspace(RANGE[0], RANGE[1], TEMP_COUNT)
+    # for _ in range(TRIALS):
+    #     # implement proper save
+    #     for i, T in enumerate(temps):
+    #         sim = Simulation(
+    #             n_particles=1000, mass=1.2e-20, rad=0.01, T=T, dt=0.01, V=1
+    #         )
+    #         run(sim, total_iter=ITER_COUNT)
+    #     sim.save_object()
