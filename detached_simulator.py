@@ -41,7 +41,7 @@ if __name__ == "__main__":
     # ITER_COUNT = 10**3
 
     sim = Simulation(n_particles=1000, mass=1.2e-20, rad=0.01, T=237, dt=0.01, V=1)
-    run(sim, 1e4, "data.pkl", 1e3)
+    run(sim, 10**4, "data.pkl", 10**3)
 
     # temps = np.linspace(RANGE[0], RANGE[1], TEMP_COUNT)
     # for _ in range(TRIALS):
