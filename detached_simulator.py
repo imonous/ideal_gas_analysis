@@ -24,11 +24,12 @@ from simulator import Simulation
 import numpy as np
 
 
-def run(sim, total_iter, verbose=True, out_file_path="data.pkl"):
+def run(sim, total_iter, out_file_path, log_iter=0):
     for it in range(total_iter):
         sim.next_step()
-        if verbose:
-            print(f"{it}/{total_iter}")
+        if log_iter != 0 and it % log_iter == 0:
+            print(it)
+            pass  # log
     sim.save_object(out_file_path)
 
 
@@ -39,12 +40,12 @@ if __name__ == "__main__":
     # TEMP_COUNT = 10
     # ITER_COUNT = 10**3
 
+    sim = Simulation(n_particles=1000, mass=1.2e-20, rad=0.01, T=237, dt=0.01, V=1)
+    run(sim, 1e4, "data.pkl", 1e3)
+
     # temps = np.linspace(RANGE[0], RANGE[1], TEMP_COUNT)
     # for _ in range(TRIALS):
     #     # implement proper save
     #     for i, T in enumerate(temps):
-    #         sim = Simulation(
-    #             n_particles=1000, mass=1.2e-20, rad=0.01, T=T, dt=0.01, V=1
-    #         )
     #         run(sim, total_iter=ITER_COUNT)
     #     sim.save_object()
