@@ -22,16 +22,22 @@ from simulation import Simulation
 import numpy as np
 
 
-def run(sim, total_iter, out_file_path):
+def run(sim, total_iter, out_file_path, log_file=None, log_iter=0):
     """
     sim: the simulation object
     total_iter: total number of iterations
-    out_file_path: the output file path (more convienient to accept string)
+    out_file_path: the output file path (append mode) (more convienient to accept string)
+    [log_iter]: how often to log (percentage as decimal)
     [log_file]: log file (more convienient to accept file object)
-    [log_iter]: how often to log (percentage)
     """
+    n = int(log_iter * total_iter)
     for i in range(total_iter):
         sim.next_step()
+        if n != 0 and i % n == 0:
+            progress = round(log_iter * (i // n), 2)
+            log_file.write(f"{out_file_path}: {progress * 100}%\n")
+        elif n != 0 and i == total_iter - 1:
+            log_file.write(f"{out_file_path}: DONE!\n")
     sim.save_object(out_file_path)
 
 
@@ -50,6 +56,9 @@ if __name__ == "__main__":
     GAS_VOLUME = 1
     TIME_STEP = 0.01
 
+    with open("./data/log.txt", "w"):  # clear log contents
+        pass
+    log_file = open("./data/log.txt", "a")
     for temp in np.linspace(*RANGE, TEMP_COUNT):
         for trial in range(1, TRIALS + 1):
             file_path = f"./data/temp{int(temp)}trial{trial}.pkl"
@@ -61,7 +70,5 @@ if __name__ == "__main__":
                 dt=TIME_STEP,
                 V=GAS_VOLUME,
             )
-            run(sim, ITER_COUNT, file_path)
-
-    # sim = Simulation(n_particles=1000, mass=1.2e-20, rad=0.01, T=237, dt=0.01, V=1)
-    # run(sim, total_iter=ITER_COUNT,
+            run(sim, ITER_COUNT, file_path, log_file, log_iter=0.2)
+    log_file.close()
