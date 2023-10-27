@@ -147,10 +147,10 @@ class Simulation:
             hist = np.append(hist, bin)
         return hist
 
-    def save_object(self, filename="data.pkl"):
-        with open(filename, "wb") as f:
+    def save_object(self, file_path):
+        with open(file_path, "wb") as f:
             pickle.dump(self, f, pickle.HIGHEST_PROTOCOL)
 
-    def load_object(filename="data.pkl"):
-        with open(filename, "rb") as f:
+    def load_object(file_path):
+        with open(file_path, "rb") as f:
             return pickle.load(f)

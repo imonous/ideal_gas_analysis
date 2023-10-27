@@ -15,8 +15,6 @@
 
     Data is backed up to "./data.pkl" by default.
 
-    TODO: Add run info file.
-
 """
 
 
@@ -24,28 +22,46 @@ from simulation import Simulation
 import numpy as np
 
 
-def run(sim, total_iter, out_file_path, log_iter=0):
-    for it in range(total_iter):
+def run(sim, total_iter, out_file_path):
+    """
+    sim: the simulation object
+    total_iter: total number of iterations
+    out_file_path: the output file path (more convienient to accept string)
+    [log_file]: log file (more convienient to accept file object)
+    [log_iter]: how often to log (percentage)
+    """
+    for i in range(total_iter):
         sim.next_step()
-        if log_iter != 0 and it % log_iter == 0:
-            print(it)
-            pass  # log
     sim.save_object(out_file_path)
 
 
+# The experiment
 if __name__ == "__main__":
-    pass
-    # RANGE = (200, 2000)
-    # TRIALS = 5
-    # TEMP_COUNT = 10
-    # ITER_COUNT = 10**3
+    # Experiment constants
+    RANGE = (200, 2000)
+    TRIALS = 2  # 5
+    TEMP_COUNT = 2  # 10
+    ITER_COUNT = 10  # 10**4
 
-    sim = Simulation(n_particles=1000, mass=1.2e-20, rad=0.01, T=237, dt=0.01, V=1)
-    run(sim, 10**4, "data.pkl", 10**3)
+    # Simulation constants
+    PARTICLE_COUNT = 1000
+    PARTICLE_MASS = 1.2e-20
+    PARTICLE_RADIUS = 0.01
+    GAS_VOLUME = 1
+    TIME_STEP = 0.01
 
-    # temps = np.linspace(RANGE[0], RANGE[1], TEMP_COUNT)
-    # for _ in range(TRIALS):
-    #     # implement proper save
-    #     for i, T in enumerate(temps):
-    #         run(sim, total_iter=ITER_COUNT)
-    #     sim.save_object()
+    for temp in np.linspace(*RANGE, TEMP_COUNT):
+        for trial in range(1, TRIALS + 1):
+            file_path = f"./data/temp{int(temp)}trial{trial}.pkl"
+            sim = Simulation(
+                n_particles=PARTICLE_COUNT,
+                mass=PARTICLE_MASS,
+                rad=PARTICLE_RADIUS,
+                T=temp,
+                dt=TIME_STEP,
+                V=GAS_VOLUME,
+            )
+            run(sim, ITER_COUNT, file_path)
+
+    # sim = Simulation(n_particles=1000, mass=1.2e-20, rad=0.01, T=237, dt=0.01, V=1)
+    # run(sim, total_iter=ITER_COUNT,
