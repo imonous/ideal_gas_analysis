@@ -52,9 +52,9 @@ def run(sim, out_file_path, total_iter, log_file_path=None, log_iter=0):
 if __name__ == "__main__":
     # Experiment constants
     RANGE = (200, 2000)
-    TRIALS = 2  # 5
-    TEMP_COUNT = 2  # 10
-    ITER_COUNT = 10**3  # 10**4
+    TRIALS = 5
+    TEMP_COUNT = 10
+    ITER_COUNT = 10**4
 
     # Simulation constants
     PARTICLE_COUNT = 1000
@@ -83,7 +83,7 @@ if __name__ == "__main__":
     func = partial(
         run, total_iter=ITER_COUNT, log_file_path=log_file_path, log_iter=0.2
     )
-    with multiprocessing.Pool(processes=2) as pool:
+    with multiprocessing.Pool() as pool:
         pool.starmap(func, args)
         pool.close()
         pool.join()
