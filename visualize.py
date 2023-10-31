@@ -16,5 +16,9 @@ def scatter(data):
     return hv.Scatter(data)
 
 
+def curve(data):
+    return hv.Curve(data)
+
+
 def save_png(obj, file_path):
     hv.save(obj, file_path, fmt="png")
