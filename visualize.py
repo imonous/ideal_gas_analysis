@@ -1,12 +1,15 @@
 import holoviews as hv
-import numpy as np
 
 hv.extension("bokeh")
 
 
+def hide_table_index(plot, element):
+    plot.handles["table"].index_position = None
+
+
 def table(data):
     heads = ["T"] + [f"Trial {i+1}" for i in range(len(data[0]) - 1)]
-    return hv.Table(data, heads)
+    return hv.Table(data, heads).opts(hooks=[hide_table_index])
 
 
 def scatter(data):
