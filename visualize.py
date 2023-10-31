@@ -20,5 +20,9 @@ def curve(data):
     return hv.Curve(data)
 
 
+def error_bars(data):
+    return hv.ErrorBars(data, vdims=["y", "neg_err", "pos_err"])
+
+
 def save_png(obj, file_path):
     hv.save(obj, file_path, fmt="png")
