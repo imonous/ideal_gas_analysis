@@ -7,20 +7,28 @@ def hide_table_index(plot, element):
     plot.handles["table"].index_position = None
 
 
-def table(data, uncertainty=False):
-    offset = 3 if uncertainty else 1  # account for non-trials
+def table(data, processed=False):
+    offset = 4 if processed else 1  # account for non-trials
     heads = ["Temperature"] + [f"Trial {i+1}" for i in range(len(data[0]) - offset)]
-    if uncertainty:
-        heads += ["Absolute uncert.", "Relative uncert."]
+    if processed:
+        heads += ["Average", "Absolute uncert.", "Relative uncert."]
     return hv.Table(data, heads).opts(hooks=[hide_table_index], width=800)
 
 
 def scatter(data):
-    return hv.Scatter(data, kdims=["T"], vdims="Part")
+    return hv.Scatter(data, kdims=["T"], vdims="Part", label="Actual").opts(
+        marker="x", size=10, color="blue", fill_alpha=0.8
+    )
 
 
-def curve(data):
-    return hv.Curve(data)
+def curve(data, fit=False):
+    return (
+        hv.Curve(data, kdims=["T"], vdims="Part")
+        if not fit
+        else hv.Curve(data, kdims=["T"], vdims="Part", label="Fitted").opts(
+            color="orange"
+        )
+    )
 
 
 def error_bars(data):
