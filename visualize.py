@@ -1,27 +1,30 @@
 import holoviews as hv
 
-hv.extension("bokeh")
-
-
-def hide_table_index(plot, element):
-    plot.handles["table"].index_position = None
+hv.extension("matplotlib", "bokeh")
 
 
 def table(data, processed=False):
+    if not processed:
+        hv.output(backend="matplotlib", size=250, dpi=300)
+    else:
+        hv.output(backend="matplotlib", size=450)
+
     offset = 4 if processed else 1  # account for non-trials
     heads = ["Temperature"] + [f"Trial {i+1}" for i in range(len(data[0]) - offset)]
     if processed:
-        heads += ["Average", "Absolute uncert.", "Relative uncert."]
-    return hv.Table(data, heads).opts(hooks=[hide_table_index], width=800)
+        heads += ["Average", "Absolute uncert.", "Relative uncert. %"]
+    return hv.Table(data, heads).opts(fontscale=4)
 
 
 def scatter(data):
+    hv.output(backend="bokeh")
     return hv.Scatter(data, kdims=["T"], vdims="Part", label="Actual").opts(
         marker="x", size=10, color="blue", fill_alpha=0.8
     )
 
 
 def curve(data, fit=False):
+    hv.output(backend="bokeh")
     return (
         hv.Curve(data, kdims=["T"], vdims="Part")
         if not fit
@@ -32,6 +35,7 @@ def curve(data, fit=False):
 
 
 def error_bars(data):
+    hv.output(backend="bokeh")
     return hv.ErrorBars(data, vdims=["y", "neg_err", "pos_err"])
 
 
